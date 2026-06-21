@@ -1,0 +1,31 @@
+# Large data files
+*.pkl
+*.csv
+*.h5
+*.bin
+
+# Checkpoint directories
+checkpoints/
+*_checkpoints/
+.ipynb_checkpoints/
+
+# CatBoost logs
+catboost_info/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Data directory (datasets are not tracked, but keep the README)
+data/
+!data/README.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
