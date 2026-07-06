@@ -1,32 +1,10 @@
-# Data Directory
+# Data setup
 
-This directory is **not tracked by git** (see `.gitignore`).  
-Place your dataset files and checkpoint sub-directories here before running the notebooks.
+Raw datasets and model checkpoints are intentionally not tracked by Git.
 
----
+Prepare the local data directory as follows:
 
-## Required datasets
-
-### Edge-IIoT
-- **Source:** IEEE DataPort — search for "Edge-IIoT-set"
-- **File needed:** `ML-EdgeIIoT-dataset.csv`
-- Place it at: `data/ML-EdgeIIoT-dataset.csv`
-
-### CIC-IDS-2017
-- **Source:** Canadian Institute for Cybersecurity
-  https://www.unb.ca/cic/datasets/ids-2017.html
-- **Files needed:** the Friday, Monday, Tuesday, Thursday, Wednesday CSV files
-  (e.g. `Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv`, etc.)
-- Place them at: `data/cicids2017_raw/`
-
----
-
-## Expected checkpoint directory structure
-
-After running the notebooks, intermediate results (pickled DataFrames and arrays)
-will be saved here automatically:
-
-```
+```text
 data/
 ├── ML-EdgeIIoT-dataset.csv
 ├── cicids2017_raw/
@@ -38,10 +16,23 @@ data/
 │   ├── Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv
 │   ├── Tuesday-WorkingHours.pcap_ISCX.csv
 │   └── Wednesday-workingHours.pcap_ISCX.csv
-├── edgeiiot_checkpoints/    <- created by Notebook 01
-├── cicids2017_checkpoints/  <- created by Notebook 02
-└── dnn_lstm_checkpoints/    <- created by Notebook 03
+├── edgeiiot_checkpoints/
+├── cicids2017_checkpoints/
+└── dnn_lstm_checkpoints/
 ```
 
-> **Note:** Serialized checkpoints and trained model files are available upon
-> formal request to the corresponding author.
+Expected canonical paths:
+
+```python
+BASE_DIR = Path("data")
+EDGE_RAW_PATH = BASE_DIR / "ML-EdgeIIoT-dataset.csv"
+RAW_CIC_DIR = BASE_DIR / "cicids2017_raw"
+VERI_KLASORU = str(RAW_CIC_DIR)
+```
+
+Dataset sources:
+
+- Edge-IIoTset: IEEE DataPort.
+- CIC-IDS-2017: https://www.unb.ca/cic/datasets/ids-2017.html
+
+Do not commit raw CSVs, serialized checkpoints, or generated pickle files. Use `metadata/` for lightweight class and feature metadata and `results/` for manuscript table CSVs.

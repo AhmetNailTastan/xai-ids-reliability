@@ -1,0 +1,2 @@
+feature_index,feature_name,status,note
+,,needs_rerun,Run src/export_metadata.py with the prepared dataset/checkpoint to export exact feature names; raw data are not stored in Git.

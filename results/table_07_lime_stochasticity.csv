@@ -1,0 +1,7 @@
+dataset,model,lime_spearman_mean,lime_spearman_std,n_instances,n_repeats
+Edge-IIoT,RF,0.40,2,30,10
+CIC-IDS-2017,RF,0.72,0,30,10
+Edge-IIoT,XGB,0.13,8,30,10
+CIC-IDS-2017,XGB,0.38,0,30,10
+Edge-IIoT,LR,0.40,2,30,10
+CIC-IDS-2017,LR,0.72,7,30,10

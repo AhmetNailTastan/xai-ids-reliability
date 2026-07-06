@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: "XAI Reliability Evaluation for Intrusion Detection Systems"
+message: "If you use this repository, please cite the accompanying manuscript."
+type: software
+authors:
+  - family-names: "Taştan"
+    given-names: "Ahmet Nail"
+    orcid: "https://orcid.org/0000-0001-9613-8570"
+  - family-names: "Ülkü"
+    given-names: "Eyüp Emre"
+repository-code: "https://github.com/AhmetNailTastan/xai-ids-reliability"
+license: MIT
