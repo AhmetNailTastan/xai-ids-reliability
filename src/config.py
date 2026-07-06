@@ -1,0 +1,26 @@
+from pathlib import Path
+
+BASE_DIR = Path("data")
+EDGE_RAW_PATH = BASE_DIR / "ML-EdgeIIoT-dataset.csv"
+RAW_CIC_DIR = BASE_DIR / "cicids2017_raw"
+VERI_KLASORU = str(RAW_CIC_DIR)
+
+EDGEIIOT_CHECKPOINT_DIR = BASE_DIR / "edgeiiot_checkpoints"
+CICIDS2017_CHECKPOINT_DIR = BASE_DIR / "cicids2017_checkpoints"
+DNN_LSTM_CHECKPOINT_DIR = BASE_DIR / "dnn_lstm_checkpoints"
+
+RESULTS_DIR = Path("results")
+METADATA_DIR = Path("metadata")
+PAPER_FIGURE_DIR = Path("figures") / "paper_figures"
+
+N_SEEDS = 10
+N_FOLD = 5
+N_MODELS_PER_ALGORITHM = N_SEEDS * N_FOLD
+N_MODEL_VARIATION_PAIRS = 1225
+
+N_MAIN_XAI = 500
+LIME_NUM_SAMPLES = 1000
+LIME_RANDOM_STATE = 42
+
+N_STOCHASTIC_INSTANCES = 30
+N_STOCHASTIC_REPEATS = 10

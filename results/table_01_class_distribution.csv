@@ -1,0 +1,28 @@
+dataset,class_name,samples,percentage
+Edge-IIoT,Backdoor,5000,7.55%
+Edge-IIoT,DDoS_HTTP,5000,7.55%
+Edge-IIoT,DDoS_ICMP,5000,7.55%
+Edge-IIoT,DDoS_TCP,5000,7.55%
+Edge-IIoT,DDoS_UDP,5000,7.55%
+Edge-IIoT,Fingerprinting,853,1.29%
+Edge-IIoT,MITM,358,0.54%
+Edge-IIoT,Normal,5000,7.55%
+Edge-IIoT,Password,5000,7.55%
+Edge-IIoT,Port_Scanning,5000,7.55%
+Edge-IIoT,Ransomware,5000,7.55%
+Edge-IIoT,SQL_injection,5000,7.55%
+Edge-IIoT,Uploading,5000,7.55%
+Edge-IIoT,Vulnerability_scanner,5000,7.55%
+Edge-IIoT,XSS,5000,7.55%
+CIC-IDS-2017,BENIGN,10000,12.62%
+CIC-IDS-2017,Bot,1956,2.47%
+CIC-IDS-2017,DDoS,10000,12.62%
+CIC-IDS-2017,DoS GoldenEye,10000,12.62%
+CIC-IDS-2017,DoS Hulk,10000,12.62%
+CIC-IDS-2017,DoS Slowhttptest,5499,6.94%
+CIC-IDS-2017,DoS slowloris,5796,7.31%
+CIC-IDS-2017,FTP-Patator,7935,10.01%
+CIC-IDS-2017,PortScan,10000,12.62%
+CIC-IDS-2017,SSH-Patator,5897,7.44%
+CIC-IDS-2017,Web Attack - Brute Force,1507,1.90%
+CIC-IDS-2017,Web Attack - XSS,652,0.82%

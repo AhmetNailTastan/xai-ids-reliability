@@ -1,0 +1,16 @@
+class_id,class_name,samples,percentage
+0,Backdoor,5000,7.55
+1,DDoS_HTTP,5000,7.55
+2,DDoS_ICMP,5000,7.55
+3,DDoS_TCP,5000,7.55
+4,DDoS_UDP,5000,7.55
+5,Fingerprinting,853,1.29
+6,MITM,358,0.54
+7,Normal,5000,7.55
+8,Password,5000,7.55
+9,Port_Scanning,5000,7.55
+10,Ransomware,5000,7.55
+11,SQL_injection,5000,7.55
+12,Uploading,5000,7.55
+13,Vulnerability_scanner,5000,7.55
+14,XSS,5000,7.55

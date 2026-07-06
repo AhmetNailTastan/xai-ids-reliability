@@ -1,0 +1,13 @@
+class_id,class_name,samples,percentage
+0,BENIGN,10000,12.62
+1,Bot,1956,2.47
+2,DDoS,10000,12.62
+3,DoS GoldenEye,10000,12.62
+4,DoS Hulk,10000,12.62
+5,DoS Slowhttptest,5499,6.94
+6,DoS slowloris,5796,7.31
+7,FTP-Patator,7935,10.01
+8,PortScan,10000,12.62
+9,SSH-Patator,5897,7.44
+10,Web Attack - Brute Force,1507,1.90
+11,Web Attack - XSS,652,0.82

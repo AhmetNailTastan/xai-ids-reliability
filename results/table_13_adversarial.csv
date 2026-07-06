@@ -1,0 +1,19 @@
+dataset,model,method,attack_success_pct,post_attack_shap_spearman,post_attack_lime_spearman
+Edge-IIoT,DT,Grad-Approx,12.0,0.993,0.4144
+CIC-IDS-2017,DT,Grad-Approx,11.5,0.914,0.0336
+Edge-IIoT,CB,Grad-Approx,16.0,0.99,0.0692
+CIC-IDS-2017,CB,Grad-Approx,9.5,0.898,0.0690
+Edge-IIoT,XGB,Grad-Approx,17.0,0.99,0.0896
+CIC-IDS-2017,XGB,Grad-Approx,7.0,0.898,0.0864
+Edge-IIoT,RF,Grad-Approx,16.0,0.974,0.1266
+CIC-IDS-2017,RF,Grad-Approx,14.5,0.849,0.0881
+Edge-IIoT,ET,Grad-Approx,18.0,0.969,0.1948
+CIC-IDS-2017,ET,Grad-Approx,4.0,0.758,0.1481
+Edge-IIoT,LGBM,Grad-Approx,29.0,0.994,0.0935
+CIC-IDS-2017,LGBM,Grad-Approx,56.5,0.897,0.0566
+Edge-IIoT,LR,Grad-Approx,31.0,0.939,-0.0301
+CIC-IDS-2017,LR,Grad-Approx,8.5,0.752,0.0338
+Edge-IIoT,DNN,True FGSM,42.0,0.838,0.0961
+CIC-IDS-2017,DNN,True FGSM,45.5,0.837,0.0580
+Edge-IIoT,LSTM,True FGSM,80.5,0.564,0.0060
+CIC-IDS-2017,LSTM,True FGSM,76.0,0.701,0.0556

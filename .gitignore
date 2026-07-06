@@ -1,8 +1,15 @@
-# Large data files
+# Large raw data and checkpoints
+data/*.csv
+data/**/*.csv
 *.pkl
-*.csv
 *.h5
 *.bin
+*.pt
+*.pth
+
+# Keep reproducibility outputs
+!results/*.csv
+!metadata/*.csv
 
 # Checkpoint directories
 checkpoints/
@@ -18,14 +25,12 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Data directory (datasets are not tracked, but keep the README)
-data/
+# Keep data instructions
+data/*
 !data/README.md
 
-# OS
+# OS / IDE
 .DS_Store
 Thumbs.db
-
-# IDE
 .vscode/
 .idea/
