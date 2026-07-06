@@ -22,8 +22,16 @@ For the main paired SHAP-LIME comparisons, LIME was run with a fixed random seed
 
 ## RQ2 wording
 
+Use this wording after the classical-model true-pairwise checkpoint rerun has completed:
+
 ```text
 For model-variation consistency, all 50 trained instances of each algorithm were compared pairwise, yielding 1,225 model pairs per algorithm. Pairwise SHAP rankings were evaluated on a shared reference sample using Spearman correlation, Jaccard@5, and Jaccard@10.
+```
+
+Use this conservative wording if the manuscript is submitted before the classical-model true-pairwise rerun is completed:
+
+```text
+For model-variation consistency, the DNN and LSTM experiments used all 50 trained instances in pairwise comparisons, yielding 1,225 model pairs per architecture. For the classical models, the current public reproducibility package retains the legacy reference-based checkpoint summaries and marks the full pairwise standard deviations for a long-running checkpoint rerun.
 ```
 
 ## Preprocessing wording

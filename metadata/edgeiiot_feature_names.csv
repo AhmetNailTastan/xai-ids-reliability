@@ -1,2 +1,75 @@
-feature_index,feature_name,status,note
-,,needs_rerun,Run src/export_metadata.py with the prepared dataset/checkpoint to export exact feature names; raw data are not stored in Git.
+feature_index,feature_name
+0,arp.opcode
+1,arp.hw.size
+2,icmp.checksum
+3,icmp.seq_le
+4,icmp.unused
+5,http.content_length
+6,http.response
+7,http.tls_port
+8,tcp.ack
+9,tcp.ack_raw
+10,tcp.checksum
+11,tcp.connection.fin
+12,tcp.connection.rst
+13,tcp.connection.syn
+14,tcp.connection.synack
+15,tcp.flags
+16,tcp.flags.ack
+17,tcp.len
+18,tcp.seq
+19,udp.stream
+20,udp.time_delta
+21,dns.qry.name
+22,dns.qry.qu
+23,dns.qry.type
+24,dns.retransmission
+25,dns.retransmit_request
+26,dns.retransmit_request_in
+27,mqtt.conflag.cleansess
+28,mqtt.conflags
+29,mqtt.hdrflags
+30,mqtt.len
+31,mqtt.msg_decoded_as
+32,mqtt.msgtype
+33,mqtt.proto_len
+34,mqtt.topic_len
+35,mqtt.ver
+36,mbtcp.len
+37,mbtcp.trans_id
+38,mbtcp.unit_id
+39,http.request.method-0
+40,http.request.method-0.0
+41,http.request.method-GET
+42,http.request.method-OPTIONS
+43,http.request.method-POST
+44,http.request.method-TRACE
+45,http.referer-() { _; } >_[$($())] { echo 93e4r0-CVE-2014-6278: true; echo;echo; }
+46,http.referer-0
+47,http.referer-0.0
+48,http.referer-127.0.0.1
+49,http.request.version--a HTTP/1.1
+50,http.request.version-/etc/passwd|?data=Download HTTP/1.1
+51,http.request.version-0
+52,http.request.version-0.0
+53,http.request.version-By Dr HTTP/1.1
+54,http.request.version-HTTP/1.0
+55,http.request.version-HTTP/1.1
+56,"http.request.version-Src=javascript:alert('Vulnerable')><Img Src=\"" HTTP/1.1"
+57,dns.qry.name.len-0
+58,dns.qry.name.len-0.0
+59,dns.qry.name.len-0.debian.pool.ntp.org
+60,dns.qry.name.len-1.0
+61,dns.qry.name.len-1.debian.pool.ntp.org
+62,dns.qry.name.len-2.debian.pool.ntp.org
+63,dns.qry.name.len-3.debian.pool.ntp.org
+64,dns.qry.name.len-_googlecast._tcp.local
+65,mqtt.conack.flags-0
+66,mqtt.conack.flags-0.0
+67,mqtt.conack.flags-0x00000000
+68,mqtt.protoname-0
+69,mqtt.protoname-0.0
+70,mqtt.protoname-MQTT
+71,mqtt.topic-0
+72,mqtt.topic-0.0
+73,mqtt.topic-Temperature_and_Humidity

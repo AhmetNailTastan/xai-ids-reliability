@@ -1,19 +1,19 @@
-dataset,model,n_models,n_pairs,spearman_mean,spearman_std,jaccard5_mean,jaccard5_std,jaccard10_mean,jaccard10_std,status
-Edge-IIoT,RF,50,1225,0.9744,,0.7951,,0.8415,,reported_mean_only_std_needs_rerun
-CIC-IDS-2017,RF,50,1225,0.8385,,0.3646,,0.3838,,reported_mean_only_std_needs_rerun
-Edge-IIoT,ET,50,1225,0.9776,,0.8080,,0.8680,,reported_mean_only_std_needs_rerun
-CIC-IDS-2017,ET,50,1225,0.7287,,0.2788,,0.3149,,reported_mean_only_std_needs_rerun
-Edge-IIoT,DT,50,1225,0.8921,,0.8107,,0.7672,,reported_mean_only_std_needs_rerun
-CIC-IDS-2017,DT,50,1225,0.7109,,0.3839,,0.3406,,reported_mean_only_std_needs_rerun
-Edge-IIoT,XGB,50,1225,0.9929,,0.9215,,0.9145,,reported_mean_only_std_needs_rerun
-CIC-IDS-2017,XGB,50,1225,0.8861,,0.6195,,0.4735,,reported_mean_only_std_needs_rerun
-Edge-IIoT,LGBM,50,1225,0.9783,,0.9348,,0.9318,,reported_mean_only_std_needs_rerun
-CIC-IDS-2017,LGBM,50,1225,0.8927,,0.4782,,0.4759,,reported_mean_only_std_needs_rerun
-Edge-IIoT,CB,50,1225,0.8235,,0.5880,,0.7837,,reported_mean_only_std_needs_rerun
-CIC-IDS-2017,CB,50,1225,0.8079,,0.5301,,0.3959,,reported_mean_only_std_needs_rerun
-Edge-IIoT,LR,50,1225,0.9993,,0.9869,,0.9797,,reported_mean_only_std_needs_rerun
-CIC-IDS-2017,LR,50,1225,0.6086,,0.1863,,0.3256,,reported_mean_only_std_needs_rerun
-Edge-IIoT,DNN,50,1225,0.9725,,0.6612,,0.7922,,reported_mean_only_std_needs_rerun
-CIC-IDS-2017,DNN,50,1225,0.9316,,0.6277,,0.6755,,reported_mean_only_std_needs_rerun
-Edge-IIoT,LSTM,50,1225,0.9459,,0.3364,,0.4841,,reported_mean_only_std_needs_rerun
-CIC-IDS-2017,LSTM,50,1225,0.8254,,0.4291,,0.4900,,reported_mean_only_std_needs_rerun
+dataset,model,n_models,n_pairs,n_reference_samples,spearman_mean,spearman_std,jaccard5_mean,jaccard5_std,jaccard10_mean,jaccard10_std,status,source
+Edge-IIoT,RF,50,1225,500,0.9744,,0.7951,,0.8415,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+CIC-IDS-2017,RF,50,1225,500,0.8385,,0.3646,,0.3838,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+Edge-IIoT,ET,50,1225,500,0.9776,,0.808,,0.868,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+CIC-IDS-2017,ET,50,1225,500,0.7287,,0.2788,,0.3149,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+Edge-IIoT,DT,50,1225,500,0.8921,,0.8107,,0.7672,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+CIC-IDS-2017,DT,50,1225,500,0.7109,,0.3839,,0.3406,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+Edge-IIoT,XGB,50,1225,500,0.9929,,0.9215,,0.9145,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+CIC-IDS-2017,XGB,50,1225,500,0.8861,,0.6195,,0.4735,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+Edge-IIoT,LGBM,50,1225,500,0.9783,,0.9348,,0.9318,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+CIC-IDS-2017,LGBM,50,1225,500,0.8927,,0.4782,,0.4759,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+Edge-IIoT,CB,50,1225,500,0.8235,,0.588,,0.7837,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+CIC-IDS-2017,CB,50,1225,500,0.8079,,0.5301,,0.3959,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+Edge-IIoT,LR,50,1225,500,0.9993,,0.9869,,0.9797,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+CIC-IDS-2017,LR,50,1225,500,0.6086,,0.1863,,0.3256,,reported_mean_only_classical_true_pairwise_needs_heavy_checkpoint_rerun,reported_manuscript_mean; rerun_with_src_export_checkpoint_artifacts
+Edge-IIoT,DNN,50,1225,100,0.972481,0.002387,0.661213,0.039834,0.792221,0.022879,true_pairwise_from_saved_shap_arrays,saved_shap_arrays:rq2_dnn_edge.pkl
+CIC-IDS-2017,DNN,50,1225,100,0.931614,0.005436,0.627655,0.033047,0.675501,0.018921,true_pairwise_from_saved_shap_arrays,saved_shap_arrays:rq2_dnn_cic.pkl
+Edge-IIoT,LSTM,50,1225,100,0.945912,0.00491,0.336432,0.049021,0.484134,0.036503,true_pairwise_from_saved_shap_arrays,saved_shap_arrays:rq2_lstm_edge.pkl
+CIC-IDS-2017,LSTM,50,1225,100,0.825369,0.014978,0.429089,0.040212,0.490011,0.032104,true_pairwise_from_saved_shap_arrays,saved_shap_arrays:rq2_lstm_cic.pkl
