@@ -1,6 +1,6 @@
 # Reproducibility Status
 
-This file records what is complete in the public package and what still requires a data/checkpoint rerun.
+This file records what is complete in the public package and what still requires raw data or local checkpoints for independent regeneration.
 
 ## Complete
 
@@ -16,12 +16,13 @@ This file records what is complete in the public package and what still requires
 - `MANUSCRIPT_PATCH_NOTES.md` contains exact manuscript replacements for code availability, data availability, LIME protocol, RQ2 wording, and preprocessing wording.
 - Result CSVs were extracted from the manuscript tables rather than fabricated.
 - `metadata/edgeiiot_feature_names.csv` and `metadata/cicids2017_feature_names.csv` were exported from prepared checkpoint matrices.
-- DNN/LSTM rows in `results/table_08_rq2_model_variation_pairwise.csv` now include true pairwise standard deviations from saved SHAP arrays.
+- Classical-model rows in `results/table_08_rq2_model_variation_pairwise.csv` now include true pairwise standard deviations recomputed from local model checkpoints.
+- DNN/LSTM rows in `results/table_08_rq2_model_variation_pairwise.csv` include true pairwise standard deviations from saved SHAP arrays.
 
-## Needs rerun before archival release
+## Remaining archival caveats
 
-- Classical-model rows in `results/table_08_rq2_model_variation_pairwise.csv` still contain manuscript-reported means and blank standard-deviation fields. They require a long-running SHAP recomputation from the saved `modeller_seed*.pkl` and `modeller_cicids_seed*.pkl` checkpoints.
-- If fold-safe preprocessing changes any metric after a fresh run, update the corresponding `results/*.csv` files and manuscript tables.
+- Raw datasets and serialized checkpoints are not tracked by Git because of file size. They can be regenerated from the public scripts and local dataset downloads.
+- If a fresh end-to-end retraining run changes any metric, update the corresponding `results/*.csv` files and manuscript tables.
 
 ## Regeneration commands
 
@@ -38,4 +39,4 @@ python -m src.export_checkpoint_artifacts --skip-classical-rq2 --skip-neural-rq2
 python -m src.export_checkpoint_artifacts
 ```
 
-The full checkpoint command recomputes classical-model SHAP matrices for 50 trained instances per algorithm and may take a long time on CPU. If precomputed NPZ files with one SHAP matrix per trained model instance are available, `src/model_variation_pairwise.py` can summarize them directly.
+The full checkpoint command recomputes classical-model SHAP matrices for 50 trained instances per algorithm and may take a long time on CPU. Use `--shap-cache-dir <path>` for resumable classical RQ2 runs. If precomputed NPZ files with one SHAP matrix per trained model instance are available, `src/model_variation_pairwise.py` can summarize them directly.

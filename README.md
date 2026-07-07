@@ -70,7 +70,7 @@ The CSV files in `results/` correspond directly to the manuscript tables. The cu
 | Table 13 | `results/table_13_xai_score.csv` |
 | Table 14 | `results/table_14_adversarial.csv` |
 
-Table 8 is intended to use true pairwise comparisons: 50 trained instances per algorithm yield 1,225 model pairs per dataset/model combination. The current CSV marks row-level provenance: DNN/LSTM rows include standard deviations recomputed from saved pairwise SHAP arrays, while classical-model rows keep manuscript-reported means and are marked for a long-running checkpoint rerun.
+Table 8 uses true pairwise comparisons: 50 trained instances per algorithm yield 1,225 model pairs per dataset/model combination. The CSV marks row-level provenance: classical-model rows were recomputed from local model checkpoints, while DNN/LSTM rows were recomputed from saved SHAP arrays.
 
 `metadata/*_class_mapping.csv` is populated from the manuscript class-distribution table. `metadata/*_feature_names.csv` is exported from the prepared Edge-IIoT and CIC-IDS-2017 checkpoint matrices, not inferred by hand.
 

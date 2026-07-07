@@ -32,6 +32,8 @@ MODEL_LABELS = {
     "LogisticRegression": "LR",
 }
 
+LABEL_TO_CLASSICAL_MODEL = {label: name for name, label in MODEL_LABELS.items()}
+
 TREE_MODELS = {
     "RandomForest",
     "ExtraTrees",
@@ -80,12 +82,84 @@ def normalize_shap_values(values) -> np.ndarray:
     return np.asarray(arr, dtype=float)
 
 
+def native_contrib_to_shap_matrix(values, n_features: int) -> np.ndarray:
+    arr = np.asarray(values)
+    stride = n_features + 1
+
+    if arr.ndim == 3 and arr.shape[-1] == stride:
+        return np.mean(np.abs(arr[:, :, :-1]), axis=1).astype(float)
+
+    if arr.ndim == 2 and arr.shape[1] == stride:
+        return arr[:, :-1].astype(float)
+
+    if arr.ndim == 2 and arr.shape[1] % stride == 0:
+        reshaped = arr.reshape(arr.shape[0], arr.shape[1] // stride, stride)
+        return np.mean(np.abs(reshaped[:, :, :-1]), axis=1).astype(float)
+
+    raise ValueError(f"Unexpected native contribution shape: {arr.shape}")
+
+
+def slugify_dataset(dataset: str) -> str:
+    return (
+        dataset.lower()
+        .replace(" ", "_")
+        .replace("-", "_")
+        .replace("/", "_")
+    )
+
+
+def get_cached_or_compute_shap_matrix(
+    *,
+    dataset: str,
+    model_name: str,
+    item_id: str,
+    model,
+    X_reference: np.ndarray,
+    shap_cache_dir: str | Path | None,
+) -> tuple[np.ndarray, str]:
+    if shap_cache_dir is None:
+        return get_shap_matrix(model_name, model, X_reference), "computed"
+
+    cache_path = (
+        Path(shap_cache_dir)
+        / slugify_dataset(dataset)
+        / MODEL_LABELS[model_name]
+        / f"{item_id}.npy"
+    )
+    if cache_path.exists():
+        return np.load(cache_path, allow_pickle=False), "cache"
+
+    matrix = get_shap_matrix(model_name, model, X_reference)
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    np.save(cache_path, matrix)
+    return matrix, "computed"
+
+
 def get_shap_matrix(model_name: str, model, X_reference: np.ndarray) -> np.ndarray:
+    n_features = X_reference.shape[1]
+
+    if model_name == "XGBoost":
+        import xgboost as xgb
+
+        values = model.get_booster().predict(xgb.DMatrix(X_reference), pred_contribs=True)
+        return native_contrib_to_shap_matrix(values, n_features)
+
+    if model_name == "LightGBM":
+        values = model.predict(X_reference, pred_contrib=True)
+        return native_contrib_to_shap_matrix(values, n_features)
+
+    if model_name == "CatBoost":
+        from catboost import Pool
+
+        values = model.get_feature_importance(Pool(X_reference), type="ShapValues")
+        return native_contrib_to_shap_matrix(values, n_features)
+
     if model_name in TREE_MODELS:
         explainer = shap.TreeExplainer(model)
-    else:
-        explainer = shap.LinearExplainer(model, X_reference)
+        values = explainer.shap_values(X_reference, check_additivity=False)
+        return normalize_shap_values(values)
 
+    explainer = shap.LinearExplainer(model, X_reference)
     values = explainer.shap_values(X_reference)
     return normalize_shap_values(values)
 
@@ -220,6 +294,27 @@ def summarize_pairwise(dataset: str, model_label: str, shap_items: list[tuple[st
     }
 
 
+def normalize_classical_model_names(model_names: list[str] | None) -> list[str]:
+    if not model_names:
+        return list(CLASSICAL_MODEL_ORDER)
+
+    normalized = []
+    for model_name in model_names:
+        if model_name in CLASSICAL_MODEL_ORDER:
+            normalized.append(model_name)
+            continue
+
+        label = model_name.upper()
+        if label in LABEL_TO_CLASSICAL_MODEL:
+            normalized.append(LABEL_TO_CLASSICAL_MODEL[label])
+            continue
+
+        valid = ", ".join([*CLASSICAL_MODEL_ORDER, *MODEL_LABELS.values()])
+        raise ValueError(f"Unknown classical model '{model_name}'. Valid values: {valid}")
+
+    return normalized
+
+
 def compute_classical_pairwise(
     dataset: str,
     checkpoint_dir: str | Path,
@@ -227,39 +322,76 @@ def compute_classical_pairwise(
     *,
     sample_size: int,
     seeds: int,
+    model_names: list[str] | None = None,
+    shap_cache_dir: str | Path | None = None,
 ) -> list[dict]:
     checkpoint_dir = Path(checkpoint_dir)
     X_reference = make_reference_sample(checkpoint_dir, pattern, sample_size)
+    selected_models = normalize_classical_model_names(model_names)
+    selected_model_set = set(selected_models)
+    shap_items_by_model: dict[str, list[tuple[str, np.ndarray]]] = {
+        model_name: [] for model_name in selected_models
+    }
+
+    started = time.time()
+    print(
+        f"[{dataset}] computing SHAP matrices for {', '.join(selected_models)}",
+        flush=True,
+    )
+
+    for seed in range(seeds):
+        seed_started = time.time()
+        seed_data = load_pickle(checkpoint_dir / pattern.format(seed=seed))
+        for record in seed_data:
+            model_name = record["model_adi"]
+            if model_name not in selected_model_set:
+                continue
+
+            record_started = time.time()
+            item_id = f"seed{record['seed']}_fold{record['fold']}"
+            matrix, matrix_source = get_cached_or_compute_shap_matrix(
+                dataset=dataset,
+                model_name=model_name,
+                item_id=item_id,
+                model=record["model_obj"],
+                X_reference=X_reference,
+                shap_cache_dir=shap_cache_dir,
+            )
+            shap_items_by_model[model_name].append((item_id, matrix))
+            print(
+                f"[{dataset}] seed {record['seed']} fold {record['fold']} "
+                f"{MODEL_LABELS[model_name]}: SHAP {matrix.shape} {matrix_source} "
+                f"in {time.time() - record_started:.1f}s",
+                flush=True,
+            )
+
+        del seed_data
+        gc.collect()
+        elapsed_seed = time.time() - seed_started
+        counts = ", ".join(
+            f"{MODEL_LABELS[model]}={len(shap_items_by_model[model])}" for model in selected_models
+        )
+        print(f"[{dataset}] seed {seed}: {elapsed_seed:.1f}s ({counts})", flush=True)
+
     summaries = []
-
-    for model_name in CLASSICAL_MODEL_ORDER:
-        started = time.time()
-        shap_items: list[tuple[str, np.ndarray]] = []
-        print(f"[{dataset}] {model_name}: computing SHAP matrices", flush=True)
-
-        for seed in range(seeds):
-            seed_data = load_pickle(checkpoint_dir / pattern.format(seed=seed))
-            for record in seed_data:
-                if record["model_adi"] != model_name:
-                    continue
-
-                item_id = f"seed{record['seed']}_fold{record['fold']}"
-                matrix = get_shap_matrix(model_name, record["model_obj"], X_reference)
-                shap_items.append((item_id, matrix))
-
-            del seed_data
-            gc.collect()
-
+    for model_name in selected_models:
+        shap_items = shap_items_by_model[model_name]
+        if not shap_items:
+            raise ValueError(f"No checkpoint records found for {dataset} {model_name}")
         summary = summarize_pairwise(dataset, MODEL_LABELS[model_name], shap_items)
         summary["status"] = "true_pairwise_from_model_checkpoints"
         summary["source"] = f"model_checkpoints:{checkpoint_dir.name}"
         summaries.append(summary)
 
         elapsed = time.time() - started
-        print(f"[{dataset}] {model_name}: {summary['n_pairs']} pairs in {elapsed:.1f}s", flush=True)
+        print(
+            f"[{dataset}] {model_name}: {summary['n_pairs']} pairs summarized "
+            f"in {elapsed:.1f}s",
+            flush=True,
+        )
 
-        del shap_items
-        gc.collect()
+    del shap_items_by_model
+    gc.collect()
 
     return summaries
 
@@ -315,6 +447,24 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--out", default="results/table_08_rq2_model_variation_pairwise.csv")
     parser.add_argument("--classical-sample-size", type=int, default=500)
     parser.add_argument("--seeds", type=int, default=10)
+    parser.add_argument(
+        "--classical-models",
+        nargs="*",
+        default=None,
+        help="Optional subset of classical models by full name or label, e.g. RF XGB LightGBM.",
+    )
+    parser.add_argument(
+        "--classical-datasets",
+        nargs="*",
+        choices=["edge", "cic"],
+        default=["edge", "cic"],
+        help="Optional subset of classical datasets to rerun.",
+    )
+    parser.add_argument(
+        "--shap-cache-dir",
+        default=None,
+        help="Optional directory for per-model SHAP matrix cache used by classical RQ2 reruns.",
+    )
     parser.add_argument("--skip-classical-rq2", action="store_true")
     parser.add_argument("--skip-neural-rq2", action="store_true")
     parser.add_argument("--skip-metadata", action="store_true")
@@ -333,24 +483,31 @@ def main() -> None:
 
     rows: list[dict] = []
     if not args.skip_classical_rq2:
-        rows.extend(
-            compute_classical_pairwise(
-                "Edge-IIoT",
-                edge_dir,
-                "modeller_seed{seed}.pkl",
-                sample_size=args.classical_sample_size,
-                seeds=args.seeds,
+        classical_datasets = set(args.classical_datasets)
+        if "edge" in classical_datasets:
+            rows.extend(
+                compute_classical_pairwise(
+                    "Edge-IIoT",
+                    edge_dir,
+                    "modeller_seed{seed}.pkl",
+                    sample_size=args.classical_sample_size,
+                    seeds=args.seeds,
+                    model_names=args.classical_models,
+                    shap_cache_dir=args.shap_cache_dir,
+                )
             )
-        )
-        rows.extend(
-            compute_classical_pairwise(
-                "CIC-IDS-2017",
-                cic_dir,
-                "modeller_cicids_seed{seed}.pkl",
-                sample_size=args.classical_sample_size,
-                seeds=args.seeds,
+        if "cic" in classical_datasets:
+            rows.extend(
+                compute_classical_pairwise(
+                    "CIC-IDS-2017",
+                    cic_dir,
+                    "modeller_cicids_seed{seed}.pkl",
+                    sample_size=args.classical_sample_size,
+                    seeds=args.seeds,
+                    model_names=args.classical_models,
+                    shap_cache_dir=args.shap_cache_dir,
+                )
             )
-        )
 
     if not args.skip_neural_rq2:
         rows.extend(
